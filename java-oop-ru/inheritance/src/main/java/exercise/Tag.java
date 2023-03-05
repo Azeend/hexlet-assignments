@@ -1,6 +1,5 @@
 package exercise;
 
-import java.util.stream.Collectors;
 import java.util.Map;
 
 // BEGIN
@@ -16,7 +15,7 @@ public class Tag {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();
-        string.append("<").append(tagName).append(" ");
+        string.append("<").append(tagName);
         for (Map.Entry<String,String> enty: tagAttribute.entrySet()) {
             string.append(" ").append(enty.getKey()).append("=\"").append(enty.getValue()).append("\"");
         }
