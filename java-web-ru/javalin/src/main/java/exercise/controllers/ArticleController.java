@@ -90,7 +90,7 @@ public final class ArticleController {
                 .asUpdate()
                 .set("title", title)
                 .set("body", body)
-                .set("category_Id", categoryId)
+                .set("category", categoryId)
                 .update();
 
         ctx.sessionAttribute("flash", "Статья успешно создана");

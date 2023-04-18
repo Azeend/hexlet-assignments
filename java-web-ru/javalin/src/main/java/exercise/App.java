@@ -51,8 +51,8 @@ public final class App {
         app.routes(() -> {
             path("articles", () ->{
                 get(ArticleController.listArticles);
-                get("{id}", ArticleController.showArticle);
                 get("new", ArticleController.newArticle);
+                get("{id}", ArticleController.showArticle);
                 post(ArticleController.createArticle);
                 get("{id}/edit", ArticleController.editArticle);
                 post("{id}/edit", ArticleController.updateArticle);
@@ -60,6 +60,7 @@ public final class App {
                 post("{id}/delete", ArticleController.destroyArticle);
             });
                 });
+
         // END
     }
 
