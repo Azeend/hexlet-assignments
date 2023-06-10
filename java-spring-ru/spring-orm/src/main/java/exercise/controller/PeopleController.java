@@ -42,7 +42,8 @@ public class PeopleController {
     }
     @PatchMapping(path = "/people/{id}")
     public void patchPerson(@RequestBody Person person, @PathVariable long id) {
-        this.personRepository.save(person.setId(id);
+        person.setId(id);
+        this.personRepository.save(person);
     }
     // END
 }
