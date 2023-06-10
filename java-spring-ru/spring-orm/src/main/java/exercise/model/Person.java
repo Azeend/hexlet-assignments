@@ -9,21 +9,18 @@ import lombok.Setter;
 
 // BEGIN
 @Entity
+@Getter
+@Setter
 // END
 public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
+
     private long id;
 
     // BEGIN
-    @Getter
-    @Setter
     private String firstName;
-    @Getter
-    @Setter
     private String lastName;
 
     // END

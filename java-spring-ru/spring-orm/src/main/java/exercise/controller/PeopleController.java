@@ -1,7 +1,9 @@
 package exercise.controller;
 
+import exercise.dto.PersonDto;
 import exercise.model.Person;
 import exercise.repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class PeopleController {
 
     // Автоматически заполняем значение поля
+    @Autowired
     private final PersonRepository personRepository;
 
     @GetMapping(path = "/{id}")
@@ -32,18 +35,25 @@ public class PeopleController {
     }
 
     // BEGIN
-    @PostMapping(path = "/people")
-    public void addPerson(@RequestBody Person person) {
-        this.personRepository.save(person);
+    @PostMapping(path = "")
+    public void createPerson(@RequestBody PersonDto personDto) {
+        Person person = new Person();
+        person.setFirstName(personDto.getFirstName());
+        person.setLastName(personDto.getLastName());
+        personRepository.save(person);
     }
-    @DeleteMapping(path = "/people/{id}")
+
+    @DeleteMapping(path = "/{id}")
     public void deletePerson(@PathVariable long id) {
         this.personRepository.deleteById(id);
     }
-    @PatchMapping(path = "/people/{id}")
-    public void patchPerson(@RequestBody Person person, @PathVariable long id) {
-        person.setId(id);
-        this.personRepository.save(person);
+
+    @PatchMapping(path = "/{id}")
+    public void updatePerson(@PathVariable long id, @RequestBody PersonDto personDto) {
+        Person person = personRepository.findById(id).orElseThrow();
+        person.setFirstName(personDto.getFirstName());
+        person.setLastName(personDto.getLastName());
+        personRepository.save(person);
     }
     // END
 }
