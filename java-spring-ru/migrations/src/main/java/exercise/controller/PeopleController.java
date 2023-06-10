@@ -27,15 +27,15 @@ public class PeopleController {
     }
 
     // BEGIN
-    @PostMapping(path = "/people/")
+    @PostMapping(path = "")
     public List<Map<String, Object>> showPersons() {
         String query = "SELECT * FROM person ";
         return jdbc.queryForList(query);
     }
-    @PostMapping(path = "/people/{id}")
+    @PostMapping(path = "/{id}")
     public Map<String, Object> showPerson(@PathVariable long id) {
         String query = "SELECT * FROM person WHERE id = ?";
-        return jdbc.queryForMap(query);
+        return jdbc.queryForMap(query, id);
     }
     // END
 }
