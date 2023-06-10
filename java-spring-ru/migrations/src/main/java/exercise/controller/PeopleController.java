@@ -3,7 +3,6 @@ package exercise.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,12 +28,12 @@ public class PeopleController {
 
     // BEGIN
     @PostMapping(path = "/people/")
-    public List<Map<String, Object>> showPersons(){
+    public List<Map<String, Object>> showPersons() {
         String query = "SELECT * FROM PERSON ";
         return jdbc.queryForList(query);
     }
     @PostMapping(path = "/people/{id}")
-    public Map<String, Object> showPerson(@PathVariable long id){
+    public Map<String, Object> showPerson(@PathVariable long id) {
         String query = "SELECT * FROM PERSON WHERE id = ?";
         return jdbc.queryForMap(query);
     }
