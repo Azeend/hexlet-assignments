@@ -114,43 +114,44 @@ public class AppTest {
 
     // BEGIN
     @Test
-    void testPatchPerson() throws Exception {
+    void testUpdatePerson() throws Exception {
+        var existingUserEmail = "jack@mail.com";
+        var existingUserId = TestUtils.getUserIdByEmail(mockMvc, existingUserEmail);
+
+        PersonDto dto = new PersonDto();
+        dto.setFirstName("Will");
+        dto.setLastName("Walker");
+        dto.setEmail("a@a.com");
+
+        mockMvc
+                .perform(
+                        patch("/people/{id}", existingUserId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(dto))
+                )
+                .andExpect(status().isOk());
+
+
         MockHttpServletResponse response = mockMvc
-                .perform(patch("/people/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstName\" : \"Mal\"}"))
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getStatus()).isEqualTo(200);
-
-        MockHttpServletResponse responseCheck = mockMvc
                 .perform(get("/people"))
                 .andReturn()
                 .getResponse();
 
-        assertThat(responseCheck.getStatus()).isEqualTo(200);
-        assertThat(responseCheck.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertThat(responseCheck.getContentAsString()).contains("Mal");
+        assertNotNull(repository.findByEmail("a@a.com"));
+        assertNull(repository.findByEmail(existingUserEmail));
     }
 
     @Test
     void testDeletePerson() throws Exception {
-        MockHttpServletResponse response = mockMvc
-                .perform(delete("/people/2"))
-                .andReturn()
-                .getResponse();
+        var existingUserEmail = "jack@mail.com";
+        var existingUserId = TestUtils.getUserIdByEmail(mockMvc, existingUserEmail);
 
-        assertThat(response.getStatus()).isEqualTo(200);
+        mockMvc
+                .perform(delete("/people/{id}", existingUserId))
+                .andExpect(status().isOk());
 
-        MockHttpServletResponse responseCheck = mockMvc
-                .perform(get("/people"))
-                .andReturn()
-                .getResponse();
 
-        assertThat(responseCheck.getStatus()).isEqualTo(200);
-        assertThat(responseCheck.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
-        assertNotNull(repository.findByEmail("jack@mail.com"));
+        assertNull(repository.findByEmail(existingUserEmail));
     }
     @Test
     void testGetAllPeople() throws Exception {
