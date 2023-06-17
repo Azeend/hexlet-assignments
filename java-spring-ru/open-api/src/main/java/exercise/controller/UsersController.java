@@ -101,11 +101,11 @@ public class UsersController {
     public void patchUser(
             @Parameter(description = "Id of user to be updated")
             @PathVariable long id,
+            @Parameter(description = "User data to update")
             @RequestBody UserDto userDto) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException(id);
-        }
-        User user = userRepository.findById(id).get();
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
