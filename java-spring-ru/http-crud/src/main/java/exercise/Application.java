@@ -28,7 +28,8 @@ public class Application {
 
     // BEGIN
     @GetMapping("/posts")
-    public List<Post> index(@RequestParam (defaultValue = "1") Integer page, @RequestParam (defaultValue = "10") Integer limit) {
+    public List<Post> index(@RequestParam (defaultValue = "1") Integer page,
+                            @RequestParam (defaultValue = "10") Integer limit) {
         return  posts.stream().skip((page - 1) * limit).limit(limit).toList();
     }
     @GetMapping("/posts/{id}")
@@ -41,7 +42,7 @@ public class Application {
         posts.add(post);
         return post;
     }
-    @PutMapping("/post/{id}")
+    @PutMapping("/posts/{id}")
     public Post update(@PathVariable String id, @RequestBody Post data) {
         var isPostExist = posts.stream().filter(post -> post.getId().equals(id)).findFirst();
         if (isPostExist.isPresent()) {
