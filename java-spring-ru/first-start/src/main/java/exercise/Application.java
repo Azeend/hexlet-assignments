@@ -12,9 +12,10 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
     @GetMapping("/about")
     String home() {
-        return "Welcome to Hexlet";
+        return "Welcome to Hexlet!";
     }
 }
 // END
