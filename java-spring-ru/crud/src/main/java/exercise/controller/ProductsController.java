@@ -32,37 +32,48 @@ public class ProductsController {
     private ProductMapper productMapper;
 
     // BEGIN
-    @GetMapping(path = "")
-    public List<ProductDTO> index() {
+    @GetMapping("")
+    List<ProductDTO> index() {
         var products = productRepository.findAll();
+
         return products.stream()
                 .map(productMapper::map)
                 .toList();
     }
-    @GetMapping(path = "/{id}")
-    public ProductDTO show(@PathVariable long id) {
-        var product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found"));
-        return productMapper.map(product);
-    }
-    @PostMapping(path = "")
+
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDTO create(@Valid @RequestBody ProductCreateDTO dto) {
-        var product = productMapper.map(dto);
+    ProductDTO create(@Valid @RequestBody ProductCreateDTO productData) {
+        var product = productMapper.map(productData);
         productRepository.save(product);
-        return productMapper.map(product);
+        var productDto = productMapper.map(product);
+        return productDto;
     }
-    @PutMapping(path = "/{id}")
+
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductDTO update(@Valid @RequestBody ProductUpdateDTO dto, @PathVariable long id) {
+    ProductDTO show(@PathVariable Long id) {
         var product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found"));
-        productMapper.update(dto, product);
-        productRepository.save(product);
-        return productMapper.map(product);
+                .orElseThrow(() -> new ResourceNotFoundException("Product not Found: " + id));
+        var productDto = productMapper.map(product);
+        return productDto;
     }
-    @DeleteMapping(path = "/{id}")
-    void delete(@PathVariable long id) {
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    ProductDTO update(@RequestBody @Valid ProductUpdateDTO productData, @PathVariable Long id) {
+        var product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not Found: " + id));
+
+        productMapper.update(productData, product);
+        productRepository.save(product);
+        var productDto = productMapper.map(product);
+        return productDto;
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void destroy(@PathVariable Long id) {
         productRepository.deleteById(id);
     }
     // END
