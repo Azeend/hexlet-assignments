@@ -90,6 +90,7 @@ class App {
         result.get();
         System.out.println("done!");
         System.out.println(size.get());
-    // END
+        // END
+    }
 }
 
